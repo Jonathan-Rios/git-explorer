@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id      String @id @default(uuid())
+  name    String
+  gitUser String
+
+  repositories Repository[]
+
+  @@map("users")
+}
+
+model Repository {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  lastReadAt  DateTime
+
+  files File[]
+
+  tags   Tag[]
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  @@index([userId])
+  @@map("repositories")
+}
+
+model File {
+  id      String @id @default(uuid())
+  name    String
+  path    String
+  content String @db.Text
+
+  repository   Repository @relation(fields: [repositoryId], references: [id])
+  repositoryId String
+
+  @@index([repositoryId])
+  @@map("files")
+}
+
+model Tag {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  color       String
+
+  repositories Repository[]
+
+  @@map("tags")
+}
