@@ -1,4 +1,4 @@
-<h1 align="center">Ignite - React - Desafio 06 - Book Wise</h1>
+<h1 align="center">Ignite - React - Git Explorer</h1>
 
 <p align="center">
   <img 
